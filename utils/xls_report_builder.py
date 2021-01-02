@@ -1,9 +1,15 @@
-import os
 import io
+import os
+
 import openpyxl
-from openpyxl.workbook import Workbook
-from openpyxl.styles import Font, Border, Side, Alignment, Protection, PatternFill
+from openpyxl.styles import Alignment
+from openpyxl.styles import Border
+from openpyxl.styles import Font
+from openpyxl.styles import PatternFill
+from openpyxl.styles import Protection
+from openpyxl.styles import Side
 from openpyxl.utils import get_column_letter
+from openpyxl.workbook import Workbook
 
 
 class XlsReportBuilder:
@@ -32,10 +38,9 @@ class XlsReportBuilder:
         if self.mode == self.MODENEW:
             self.workbook = Workbook(self.file_loc)
             self.workbook.save(result_file)
-
         elif self.mode == self.MODEWRITE:
             self.workbook = openpyxl.load_workbook(self.file_loc)
-            self.sheet = self.workbook.create_sheet(component_type, index-1)
+            self.sheet = self.workbook.create_sheet(component_type, index - 1)
             for sobj in range(len(self.workbook.sheetnames)):
                 if self.workbook.sheetnames[sobj] == component_type:
                     break

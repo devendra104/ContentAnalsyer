@@ -1,0 +1,20 @@
+# Created by .ignore support plugin (hsz.mobi)
+# Compiled python code.
+*.pyc
+
+# Distribution / packaging
+
+# Test results.
+
+
+**/test-*.pstats
+/.tox
+/.coverage
+/htmlcov/
+
+lib/__pycache__
+pyenvi
+config/__pycache__
+.idea
+utils/*.pyc
+utils/.idea
