@@ -1,0 +1,35 @@
+ReportConfig:
+  result_file: "test_result.xlsx"
+  template_report_header:
+    - "Module"
+    - "Component"
+    - "Template_File_Name"
+    - "Added"
+    - "Removed"
+  nontemplate_report_header:
+    - "Module"
+    - "Component"
+    - "Attribute"
+    - "Pre-Upgrade"
+    - "Post-Upgrade"
+    - "Variation"
+  template_column_variation_index:
+    - 2
+    - 3
+    - 4
+  nontemplate_column_variation_index:
+    - 3
+    - 4
+    - 5
+  module_name:
+    - "CLI"
+    - "API"
+    - "Template"
+  modules_entities_config_file: "existence_test_data.yml"
+  specific_data_selection_field:
+    Template:
+      - "Kind:"
+      - "Name:"
+      - "Model:"
+    CLI: ""
+    API: ""

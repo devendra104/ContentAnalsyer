@@ -1,0 +1,10 @@
+<%
+commands = input(:helper).split(',').map { |split| split.strip }
+reboot = commands.delete('reboot')
+hello="devendra"
+-%>
+katello-tracer-upload
+testcontentanalsyer=12
+<% if reboot -%>
+<%= render_template('Power Action - SSH Default', action: 'restart') %>
+<% end %>

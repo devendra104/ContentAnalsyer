@@ -1,0 +1,224 @@
+CLI:
+  activation-key:
+    component:
+      - "content view"
+      - "lifecycle environment"
+    common-id: "name"
+  settings:
+    component:
+      - "value"
+      - "description"
+    common-id: "name"
+  architecture:
+    component:
+      - "id"
+    common-id: "name"
+  capsule:
+    component:
+      - "features"
+      - "url"
+    common-id: "name"
+  compute-resource:
+    component:
+      - "provider"
+    common-id: "name"
+  content-host:
+    component:
+      - "installable errata"
+    common-id: "name"
+  content-view:
+    component:
+      - "repository ids"
+      - "label"
+      - "composite"
+    common-id: "name"
+  discovery:
+    component:
+      - "mac"
+      - "cpus"
+      - "disk count"
+      - "memory"
+      - "disks size"
+      - "subnet"
+    common-id: "name"
+  discovery_rule:
+    component:
+      - "priority"
+      - "search"
+      - "host group"
+      - "hosts limit"
+      - "enabled"
+    common-id: "name"
+  domain:
+    component:
+      - 'id'
+    common-id: 'name'
+  filter:
+    component:
+      - "resource type"
+      - "search"
+      - "unlimited?"
+      - "role"
+      - "permissions"
+    common-id: 'id'
+  hostgroup:
+    component:
+      - 'id'
+      - 'title'
+      - 'operating system'
+      - 'puppet environment'
+      - 'model'
+    common-id: 'name'
+  hosts:
+    component:
+      - 'ip'
+      - 'mac'
+      - 'host group'
+      - 'operating system'
+      - 'global status'
+      - 'content view'
+      - 'lifecycle environment'
+    common-id: 'name'
+  lifecycle-environment:
+    component:
+      - 'id'
+      - 'prior'
+    common-id: 'name'
+  medium:
+    component:
+      - 'id'
+      - 'path'
+    common-id: 'name'
+  organization:
+    component:
+      - 'id'
+      - 'title'
+      - 'name'
+      - 'description'
+      - 'label'
+    common-id: 'name'
+  os:
+    component:
+      - 'title'
+      - 'release name'
+      - 'family'
+    common-id: 'id'
+  product:
+    component:
+      - 'id'
+      - 'description'
+      - 'organization'
+      - 'repositories'
+      - 'sync state'
+    common-id: 'name'
+  partition-table:
+    component:
+      - 'id'
+      - 'os family'
+    common-id: 'name'
+  puppet-class:
+    component:
+      - 'id'
+    common-id: 'name'
+  puppet-module:
+    component:
+      - 'id'
+      - 'name'
+      - 'author'
+      - 'version'
+      - 'uuid'
+    common-id: 'name'
+  puppet-environment:
+    component:
+      - 'id'
+    common-id: 'name'
+  repository:
+    component:
+      - 'id'
+      - 'product'
+      - 'content type'
+      - 'url'
+    common-id: 'name'
+  role:
+    component:
+      - 'id'
+      - 'builtin'
+    common-id: 'name'
+  sc-param:
+    component:
+      - 'parameter'
+      - 'default value'
+      - 'undef'
+      - 'override'
+      - 'puppet class'
+    common-id: 'id'
+  subnet:
+    component:
+      - 'id'
+      - 'network addr'
+      - 'network prefix'
+      - 'network mask'
+      - 'vlan id'
+      - 'boot mode'
+      - 'dhcp'
+      - 'gateway address'
+    common-id: 'name'
+  sync-plan:
+    component:
+      - 'id'
+      - 'start date'
+      - 'interval'
+      - 'enabled'
+      - 'cron expression'
+      - 'recurring logic id'
+    common-id: 'name'
+  user-group:
+    component:
+      - 'id'
+      - 'admin'
+    common-id: 'name'
+  user:
+    component:
+      - 'id'
+      - 'login'
+      - 'email'
+      - 'admin'
+      - 'authorized by'
+    common-id: 'name'
+  virt-who-config:
+    component:
+      - 'id'
+      - 'interval'
+      - 'status'
+    common-id: 'name'
+  gpg:
+    component:
+      - "id"
+    common-id: "name"
+  smart-variable:
+    component:
+      - 'variable'
+      - 'default value'
+      - 'type'
+      - 'puppet class'
+    common-id: 'id'
+
+API:
+  contentview:
+    component:
+      - "content_host_count"
+      - "repository_ids"
+      - "id"
+      - "label"
+    common-id: "name"
+
+Template:
+  job-template:
+    component: ""
+    common-id: ""
+  partition-table:
+    component: ""
+    common-id: ""
+  template:
+    component: ""
+    common-id: ""
