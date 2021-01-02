@@ -1,12 +1,15 @@
-import shutil
-import filecmp
-import re
-import yaml
-import json
 import ast
-from utils.xls_report_builder import *
-from utils.xls_report_propertes import *
+import filecmp
+import json
+import os
+import re
+import shutil
 from difflib import Differ
+
+import yaml
+
+from utils.xls_report_builder import XlsReportBuilder
+from utils.xls_report_propertes import TestAnalysisProperties
 
 
 class ExistenceTestFailureAnalysis:
@@ -28,19 +31,18 @@ class ExistenceTestFailureAnalysis:
                     "cli"
                 ],
             },
-            'post_data':
-                {
-                    'post_api': [
-                        f"{self.basepath}/postupgrade_api",
-                        f"{self.basepath}/post_upgrade_data_api",
-                        "api"
-                    ],
-                    'post_cli': [
-                        f"{self.basepath}/postupgrade_cli",
-                        f"{self.basepath}/post_upgrade_data_cli",
-                        "cli"
-                    ],
-                }
+            'post_data': {
+                'post_api': [
+                    f"{self.basepath}/postupgrade_api",
+                    f"{self.basepath}/post_upgrade_data_api",
+                    "api"
+                ],
+                'post_cli': [
+                    f"{self.basepath}/postupgrade_cli",
+                    f"{self.basepath}/post_upgrade_data_cli",
+                    "cli"
+                ],
+            }
         }
 
     def run(self, component_type, component, attribute, pre_post_data):
@@ -54,7 +56,7 @@ class ExistenceTestFailureAnalysis:
             self.prop_obj.rows_no += 1
         else:
             for pre_post in pre_post_data:
-                self.xls_data_field_updater(component_type, component, attribute,  pre_post)
+                self.xls_data_field_updater(component_type, component, attribute, pre_post)
                 self.prop_obj.rows_no += 1
 
     def xls_sheet_header(self, component_type):
@@ -77,10 +79,12 @@ class ExistenceTestFailureAnalysis:
             # This statement is used to add a new component sheet in the existing xlsx sheet
             if not self.prop_obj.new_sheet:
                 xlsstyle = XlsReportBuilder.xls_sheet_style("header")
-                xls_report = XlsReportBuilder(self.result_file_path, XlsReportBuilder.MODEWRITE)
+                xls_report = XlsReportBuilder(self.result_file_path,
+                                              XlsReportBuilder.MODEWRITE)
             else:
                 xlsstyle = XlsReportBuilder.xls_sheet_style("data_field")
-                xls_report = XlsReportBuilder(self.result_file_path, XlsReportBuilder.MODEAPPEND)
+                xls_report = XlsReportBuilder(self.result_file_path,
+                                              XlsReportBuilder.MODEAPPEND)
             xls_report.open_work_book(component_type, self.result_file_path,
                                       self.prop_obj.count_index)
             if component_type == "Template":
@@ -121,7 +125,8 @@ class ExistenceTestFailureAnalysis:
             list_of_data = list()
             common_config_data = self.config_details["template_report_header"]
             new_added_field = [item.strip(":") for item in
-                               self.config_details["specific_data_selection_field"][component_type]]
+                               self.config_details[
+                                   "specific_data_selection_field"][component_type]]
             all_template_possible_field = common_config_data + new_added_field
             for item in all_template_possible_field:
                 list_of_data.append(pre_post[item])
@@ -130,7 +135,8 @@ class ExistenceTestFailureAnalysis:
         self.result_updater(component_type, self.prop_obj.row_no, xls_report_content,
                             self.prop_obj.count_index, xlsstyle, [3, 4, 5])
 
-    def result_updater(self, component_type, row_number, data_list, index, xlsstyle, index_list):
+    def result_updater(self, component_type, row_number, data_list, index, xlsstyle,
+                       index_list):
         xls_report = XlsReportBuilder(self.result_file_path, XlsReportBuilder.MODEAPPEND)
         xls_report.open_work_book(component_type, self.result_file_path, index)
         column_number = 1
@@ -143,7 +149,8 @@ class ExistenceTestFailureAnalysis:
 
     def file_reader(self, file):
         """
-        This method is used to read the data from file and saved it in well formatted dictionary.
+        This method is used to read the data from file and saved it in well formatted
+        dictionary.
         :param file:
         :return:
         """
@@ -210,7 +217,8 @@ class ExistenceTestFailureAnalysis:
         and post-upgrade entities attribute.
         :param module_name: category of data, it can be CLI, API or Template.
         :param post_entity_data: entity based data like dns, activation-key, domain, os etc.
-        :param pre_data_attribute: This is pre data's entities attribute like name, id, value etc.
+        :param pre_data_attribute: This is pre data's entities attribute like name, id, value
+         etc.
         :return: 0(match) or 1(mismatch) and variance pre data attributes(variance) or
         empty dict(no variance).
         """
@@ -224,9 +232,11 @@ class ExistenceTestFailureAnalysis:
                         return 0, {}
                     elif post_data_attribute.values() == pre_data_attribute.values():
                         return 1, post_data_attribute
-                    elif set(post_data_attribute.values()).issubset(set(pre_data_attribute.values())):
+                    elif set(post_data_attribute.values()).\
+                            issubset(set(pre_data_attribute.values())):
                         return 1, post_data_attribute
-                    elif set(pre_data_attribute.values()).issubset(set(post_data_attribute.values())):
+                    elif set(pre_data_attribute.values()).\
+                            issubset(set(post_data_attribute.values())):
                         return 1, post_data_attribute
             return 1, pre_data_attribute
 
@@ -369,17 +379,18 @@ class ExistenceTestFailureAnalysis:
                     added_elements = [added for added in difference if added.startswith('+')]
                     removed_elements = [added for added in difference if added.startswith('-')]
                     if added_elements or removed_elements:
-                        specific_field_data = self.specific_data_field_extraction(component_type,
-                                                                                  pre_content)
+                        specific_field_data = self.specific_data_field_extraction(
+                            component_type, pre_content)
                         variance_data = {"Template_File_Name": f'{pre_data_file}',
                                          "Added": added_elements, "Removed": removed_elements}
-                        for kind in self.config_details["specific_data_selection_field"]\
-                                [component_type]:
-                            variance_data[kind.strip(":")] = specific_field_data[kind.strip(":")]
+                        for kind in self.config_details["specific_data_selection_field"][
+                                component_type]:
+                            variance_data[kind.strip(":")] = specific_field_data[
+                                kind.strip(":")]
                         post_data_variance.append(variance_data)
         return post_data_variance
 
-    def missing_template(self, component_name,  pre_data, post_data):
+    def missing_template(self, component_name, pre_data, post_data):
         """
         This method is used to check the missing template.
         :param component_name:
@@ -396,12 +407,12 @@ class ExistenceTestFailureAnalysis:
                     missing_template[component_name].append(pre_data_file)
         return missing_template
 
-    def variance_template(self, component_name,  pre_data, post_data):
+    def variance_template(self, component_name, pre_data, post_data):
         """
-        This method is used to collect the variance between pre_upgraded data with post_upgraded
-         data
-        :param component_name: name of the template type, it could be job_template, provisioning
-        etc
+        This method is used to collect the variance between pre_upgraded data with
+        post_upgraded data
+        :param component_name: name of the template type, it could be job_template,
+        provisioning etc
         :param pre_data: all the data file for the specific component before upgrade.
         :param post_data:all the data file for the specific component after upgrade.
         :return: dictionary of component variance.
@@ -422,7 +433,7 @@ class ExistenceTestFailureAnalysis:
         for component_name in component_type_data:
             pre_data = f"{self.basepath}/preupgrade_templates/{component_name}"
             post_data = f"{self.basepath}/postupgrade_templates/{component_name}"
-            missing_templates = self.missing_template(component_name, pre_data, post_data)
+            # missing_templates = self.missing_template(component_name, pre_data, post_data)
             varinace_templates = self.variance_template(component_name, pre_data,
                                                         post_data)
             component_diff = self.post_template_comparison(module_name,
@@ -455,11 +466,10 @@ class ExistenceTestFailureAnalysis:
                 else:
                     variation_data_list = self.pre_data_compare(module_name, pre_data,
                                                                 post_data)
-                    variance_data, not_exist = self.attribute_base_comparison(post_data,
-                                                                              component_name,
-                                                                              component_attributes,
-                                                                              component_id,
-                                                                              variation_data_list)
+                    variance_data, not_exist = \
+                        self.attribute_base_comparison(post_data, component_name,
+                                                       component_attributes, component_id,
+                                                       variation_data_list)
                     self.run(module_name, component_name, component_id, not_exist)
                     for attribute in component_attributes:
                         self.run(module_name, component_name, attribute,
@@ -468,7 +478,8 @@ class ExistenceTestFailureAnalysis:
     def report_builder(self):
         for component_type in self.config_details["module_name"]:
             component_type_data = self.yaml_to_dict_converter(
-                self.config_details["modules_entities_config_file"], component_type)
+                self.config_details["modules_entities_config_file"],
+                component_type)
             if component_type == "Template":
                 self.prop_obj.new_sheets = True
                 self.template_report_builder(component_type, component_type_data)
