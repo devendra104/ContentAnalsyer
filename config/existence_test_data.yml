@@ -148,7 +148,6 @@ CLI:
     component:
       - 'parameter'
       - 'default value'
-      - 'undef'
       - 'override'
       - 'puppet class'
     common-id: 'id'
