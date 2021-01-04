@@ -18,3 +18,4 @@ config/__pycache__
 .idea
 utils/*.pyc
 utils/.idea
+report/*.xlsx

@@ -347,6 +347,10 @@ class ExistenceTestFailureAnalysis:
         if not specific_filed_data:
             for field in field_list:
                 specific_filed_data[field.strip(":")] = "job-template"
+        else:
+            for field in field_list:
+                if field.strip(":") not in specific_filed_data:
+                    specific_filed_data[field.strip(":")] = module_name
         return specific_filed_data
 
     def post_template_comparison(self, component_type, component_name, pre_data, post_data,
